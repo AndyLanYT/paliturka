@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_21_171221) do
+ActiveRecord::Schema.define(version: 2021_08_24_091740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "allowlisted_jwts", force: :cascade do |t|
+    t.bigint "users_id", null: false
+    t.string "jti", null: false
+    t.string "aud", null: false
+    t.datetime "exp", null: false
+    t.string "remote_ip"
+    t.string "os_data"
+    t.string "browser_data"
+    t.string "device_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["jti"], name: "index_allowlisted_jwts_on_jti", unique: true
+    t.index ["users_id"], name: "index_allowlisted_jwts_on_users_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -29,4 +44,5 @@ ActiveRecord::Schema.define(version: 2021_08_21_171221) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "allowlisted_jwts", "users", column: "users_id", on_delete: :cascade
 end
