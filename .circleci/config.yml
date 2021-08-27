@@ -1,0 +1,105 @@
+version: 2.1
+
+orbs:
+  ruby: circleci/ruby@1.1.0
+
+caches:
+  - &bundle_cache_full v2-repo-{{ checksum "Gemfile.lock" }}
+  - &bundle_cache v2-repo-
+
+commands:
+  bundler:
+    description: install bundler
+    steps:
+      - run:
+          name: Configure bundler
+          command: |
+            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >> $BASH_ENV
+            source $BASH_ENV
+            gem install bundler
+      - restore_cache:
+          keys:
+            - *bundle_cache_full
+            - *bundle_cache
+      - run:
+          name: Install bundle
+          command: bundle install --path vendor/bundle
+      - save_cache:
+          key: *bundle_cache_full
+          paths:
+            - vendor/bundle
+  rubocop:
+    description: command to start rubocop
+    steps:
+      - run:
+          name: rubocop
+          command: bundle exec rubocop
+  fasterer:
+    description: command to start fasterer
+    steps:
+      - run:
+          name: fasterer
+          command: bundle exec fasterer
+jobs:
+  build:
+    docker:
+      - image: cimg/ruby:3.0.2
+    steps:
+      - checkout
+      - ruby/install-deps
+  linter:
+    docker:
+      - image: cimg/ruby:3.0.2
+    steps:
+      - checkout
+      - bundler
+      - rubocop
+      - fasterer
+  test:
+    docker:
+      - image: cimg/ruby:3.0.2
+      - image: circleci/postgres:12.0
+        environment:
+          POSTGRES_USER: postgresql
+          POSTGRES_DB: paliturka_test
+          POSTGRES_PASSWORD: ""
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      PGHOST: 127.0.0.1
+      PGUSER: postgresql
+      PGPASSWORD: ""
+      RAILS_ENV: test
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database setup
+          command: bundle exec rails db:schema:load --trace
+      - run:
+          name: run specs
+          command: |
+            bundle exec rspec --format progress \
+                              --format RspecJunitFormatter \
+                              --out /tmp/test-results/rspec.xml
+          when: always
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+      - linter:
+          requires:
+            - build
+      - test:
+          requires:
+            - linter
