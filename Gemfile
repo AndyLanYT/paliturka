@@ -31,6 +31,15 @@ gem 'bootsnap', '>= 1.4.4', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+
+  # I added this gems
+  gem 'fasterer', '~> 0.9.0'
+  gem 'overcommit', '~> 0.58.0'
+  gem 'rspec-rails'
+  gem 'rubocop', '~> 1.14'
+  gem 'rubocop-performance', '~> 1.11', '>= 1.11.3'
+  gem 'rubocop-rails', '~> 2.10', '>= 2.10.1'
+  gem 'rubocop-rspec', '~> 2.3'
 end
 
 group :development do
@@ -61,3 +70,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
 gem 'devise-jwt'
 gem 'rack-cors'
+gem 'cancancan'
