@@ -1,7 +1,11 @@
-class ApplicationController < ActionController::Base
+class ApplicationController < ActionController::API
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
+
+  def current_token
+    request.env['warden-jwt_auth.token']
+  end
 
   def configure_permitted_parameters
     added_attrs = [:username, :email, :password, :password_confirmation, :remember_me]
