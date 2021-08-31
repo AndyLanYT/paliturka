@@ -14,7 +14,7 @@
       <img src="./assets/0.12.3/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" class="hide">
-      <div class="timestamp">Generated <abbr class="timeago" title="2021-08-31T15:10:16+03:00">2021-08-31T15:10:16+03:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2021-08-31T18:39:17+03:00">2021-08-31T18:39:17+03:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -23,14 +23,14 @@
     <span class="group_name">All Files</span>
     (<span class="covered_percent">
       <span class="red">
-  60.0%
+  57.35%
 </span>
 
      </span>
      covered at
      <span class="covered_strength">
        <span class="red">
-         0.6
+         0.57
        </span>
     </span> hits/line
     )
@@ -39,15 +39,15 @@
   <a name="AllFiles"></a>
 
   <div>
-    <b>7</b> files in total.
+    <b>8</b> files in total.
   </div>
 
   <div class="t-line-summary">
-    <b>60</b> relevant lines,
-    <span class="green"><b>36</b> lines covered</span> and
-    <span class="red"><b>24</b> lines missed. </span>
+    <b>68</b> relevant lines,
+    <span class="green"><b>39</b> lines covered</span> and
+    <span class="red"><b>29</b> lines missed. </span>
     (<span class="red">
-  60.0%
+  57.35%
 </span>
 )
   </div>
@@ -89,6 +89,17 @@
             <td class="cell--number">5</td>
             <td class="cell--number">1</td>
             <td class="cell--number">0.83</td>
+            
+          </tr>
+        
+          <tr class="t-file">
+            <td class="strong t-file__name"><a href="#2c69eb5050a372eae9a1f566b8ee1f2644bc95ca" class="src_link" title="app/controllers/registrations_controller.rb">app/controllers/registrations_controller.rb</a></td>
+            <td class="red strong cell--number t-file__coverage">37.50 %</td>
+            <td class="cell--number">16</td>
+            <td class="cell--number">8</td>
+            <td class="cell--number">3</td>
+            <td class="cell--number">5</td>
+            <td class="cell--number">0.38</td>
             
           </tr>
         
@@ -250,14 +261,14 @@
     <span class="group_name">Controllers</span>
     (<span class="covered_percent">
       <span class="red">
-  58.33%
+  54.55%
 </span>
 
      </span>
      covered at
      <span class="covered_strength">
        <span class="red">
-         0.58
+         0.55
        </span>
     </span> hits/line
     )
@@ -266,15 +277,15 @@
   <a name="Controllers"></a>
 
   <div>
-    <b>3</b> files in total.
+    <b>4</b> files in total.
   </div>
 
   <div class="t-line-summary">
-    <b>36</b> relevant lines,
-    <span class="green"><b>21</b> lines covered</span> and
-    <span class="red"><b>15</b> lines missed. </span>
+    <b>44</b> relevant lines,
+    <span class="green"><b>24</b> lines covered</span> and
+    <span class="red"><b>20</b> lines missed. </span>
     (<span class="red">
-  58.33%
+  54.55%
 </span>
 )
   </div>
@@ -316,6 +327,17 @@
             <td class="cell--number">5</td>
             <td class="cell--number">1</td>
             <td class="cell--number">0.83</td>
+            
+          </tr>
+        
+          <tr class="t-file">
+            <td class="strong t-file__name"><a href="#2c69eb5050a372eae9a1f566b8ee1f2644bc95ca" class="src_link" title="app/controllers/registrations_controller.rb">app/controllers/registrations_controller.rb</a></td>
+            <td class="red strong cell--number t-file__coverage">37.50 %</td>
+            <td class="cell--number">16</td>
+            <td class="cell--number">8</td>
+            <td class="cell--number">3</td>
+            <td class="cell--number">5</td>
+            <td class="cell--number">0.38</td>
             
           </tr>
         
@@ -790,7 +812,7 @@
 
             
 
-            <code class="ruby">    devise_parameter_sanitizer.permit :sign_up, keys: [:email]</code>
+            <code class="ruby">    devise_parameter_sanitizer.permit(:sign_up, keys: [:email])</code>
           </li>
         </div>
       
@@ -801,7 +823,7 @@
 
             
 
-            <code class="ruby">    devise_parameter_sanitizer.permit :sign_in, keys: [:email]</code>
+            <code class="ruby">    devise_parameter_sanitizer.permit(:sign_in, keys: [:email])</code>
           </li>
         </div>
       
@@ -992,6 +1014,213 @@
       
         <div>
           <li class="never" data-hits="" data-linenumber="13">
+            
+            
+
+            
+
+            <code class="ruby">end</code>
+          </li>
+        </div>
+      
+    </ol>
+  </pre>
+</div>
+
+      
+        <div class="source_table" id="2c69eb5050a372eae9a1f566b8ee1f2644bc95ca">
+  <div class="header">
+    <h3>app/controllers/registrations_controller.rb</h3>
+    <h4>
+      <span class="red">
+  37.5%
+</span>
+
+      lines covered
+    </h4>
+
+    
+
+    <div class="t-line-summary">
+      <b>8</b> relevant lines.
+      <span class="green"><b>3</b> lines covered</span> and
+      <span class="red"><b>5</b> lines missed.</span>
+    </div>
+
+    
+
+  </div>
+
+  <pre>
+    <ol>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="1">
+            <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">class RegistrationsController &lt; Devise::RegistrationsController</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="2">
+            <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">  respond_to :json</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="3">
+            
+            
+
+            
+
+            <code class="ruby"></code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="4">
+            
+            
+
+            
+
+            <code class="ruby">  # POST /users</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="5">
+            
+            
+
+            
+
+            <code class="ruby">  # Specs No</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="6">
+            <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">  def create</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="missed" data-hits="0" data-linenumber="7">
+            
+            
+
+            
+
+            <code class="ruby">    build_resource(sign_up_params)</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="8">
+            
+            
+
+            
+
+            <code class="ruby"></code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="missed" data-hits="0" data-linenumber="9">
+            
+            
+
+            
+
+            <code class="ruby">    resource.save</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="missed" data-hits="0" data-linenumber="10">
+            
+            
+
+            
+
+            <code class="ruby">    if resource.persisted?</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="missed" data-hits="0" data-linenumber="11">
+            
+            
+
+            
+
+            <code class="ruby">      render json: { message: I18n.t(&#39;controllers.registrations.confirm&#39;) }</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="12">
+            
+            
+
+            
+
+            <code class="ruby">    else</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="missed" data-hits="0" data-linenumber="13">
+            
+            
+
+            
+
+            <code class="ruby">      render json: resource.errors, status: 401</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="14">
+            
+            
+
+            
+
+            <code class="ruby">    end</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="15">
+            
+            
+
+            
+
+            <code class="ruby">  end</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="16">
             
             
 

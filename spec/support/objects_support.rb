@@ -1,10 +1,9 @@
 module ObjectsSupport
   def create_user(params = {})
-    last_id = User.limit(1).order(id: :desc).pluck(:id).first || 0
     user = User.new(
-      email: params[:name].present? ? "#{params[:name]}@test.com" : "testtest#{last_id+1}@test.com",
-      password: '123456789',
-      password_confirmation: '123456789'
+      email: 'test@example.com',
+      password: 'password',
+      password_confirmation: 'password'
     )
     user.skip_confirmation!
     user.save!

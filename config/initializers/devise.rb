@@ -320,5 +320,4 @@ Devise.setup do |config|
     # Use default aud_header
     jwt.aud_header = 'JWT_AUD'
   end
-
 end

@@ -8,19 +8,20 @@ module JwtSupport
     )
   end
 
-  def get_headers(login, password)
-    jwt = get_jwt(login, password)
+  def get_headers(login)
+    jwt = get_jwt(login)
     {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      HTTP_JWT_AUD: 'test',
-      Authorization: "Bearer #{jwt}"
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      'HTTP_JWT_AUD': 'test',
+      'Authorization': "Bearer #{jwt}"
     }
   end
 
-  def get_jwt(login, password)
-    headers = { HTTP_JWT_AUD: 'test' }
-    post '/users/sign_in', params: { user: { email: login, password: password } }, headers: headers
+  def get_jwt(login)
+    headers = { 'HTTP_JWT_AUD': 'test' }
+    post '/users/sign_in', params: { user: { email: login, password: 'password' } }, headers: headers
+    byebug
     JSON.parse(response.body, object_class: OpenStruct).jwt
   end
 end
