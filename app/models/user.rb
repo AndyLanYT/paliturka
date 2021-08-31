@@ -12,7 +12,17 @@ class User < ApplicationRecord
     :jwt_authenticatable,
     jwt_revocation_strategy: self
 
-  
+  has_many :allowlisted_jwts, dependent: :destroy
+
+  def for_display
+    {
+      # username: username,
+      email: email,
+      id: id
+    }
+  end
+
+
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
   validate :validate_username
@@ -42,5 +52,4 @@ class User < ApplicationRecord
       end
     end
   end
-
 end
