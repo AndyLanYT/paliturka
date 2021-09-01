@@ -16,8 +16,7 @@ RSpec.describe RegistrationsController, type: :controller do
   # describe 'post #create' do
   #   it 'response is successful' do
   #     post :create, params: { user: valid_user_params }
-  #     byebug
   #     expect(response).to be_successful
-    # end
+  #   end
   # end
 end
