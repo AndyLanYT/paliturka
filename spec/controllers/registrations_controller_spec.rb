@@ -13,10 +13,12 @@ RSpec.describe RegistrationsController, type: :controller do
     @request.env['devise.mapping'] = Devise.mappings[:user]
   end
 
-  # describe 'post #create' do
-  #   it 'response is successful' do
-  #     post :create, params: { user: valid_user_params }
-  #     expect(response).to be_successful
-  #   end
-  # end
+  describe 'POST #create' do
+    it 'response is successful' do
+      post :create, params: { user: valid_user_params }
+      expect(response).to be_successful
+      expect(User.count).to eq 1
+      expect(User.first.email).to eq valid_user_params[:email]
+    end
+  end
 end

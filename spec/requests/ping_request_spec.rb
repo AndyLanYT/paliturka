@@ -15,7 +15,6 @@ RSpec.describe "Pings", type: :request do
     user = create_user
     headers = get_headers(user.email, user.password)
     get '/ping/auth/', headers: headers
-    byebug
     expect(response).to have_http_status(200)
   end
 end
