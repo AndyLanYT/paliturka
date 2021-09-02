@@ -32,14 +32,18 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 
-  # I added this gems
+  # I added these gems
   gem 'fasterer', '~> 0.9.0'
   gem 'overcommit', '~> 0.58.0'
   gem 'rspec-rails'
+  gem 'rexml'
+  gem 'spring-commands-rspec'
+  gem 'parallel_tests'
   gem 'rubocop', '~> 1.14'
   gem 'rubocop-performance', '~> 1.11', '>= 1.11.3'
   gem 'rubocop-rails', '~> 2.10', '>= 2.10.1'
   gem 'rubocop-rspec', '~> 2.3'
+  gem 'dotenv-rails'
 end
 
 group :development do
@@ -59,14 +63,17 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
+
+  # I added these gems
+  gem 'simplecov', require: false
+  gem 'database_cleaner-active_record'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 
-# I added this gems:
-
+# I added these gems:
 gem 'devise'
 gem 'devise-jwt'
 gem 'rack-cors'
