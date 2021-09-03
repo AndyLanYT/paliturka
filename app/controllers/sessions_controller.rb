@@ -17,18 +17,18 @@ class SessionsController < Devise::SessionsController
       aud = possible_aud || 'UNKNOWN'
       if last.present?
         last.update_columns({
-          browser_data: params[:browser],
-          os_data: params[:os],
-          remote_ip: params[:ip],
-        })
+                              browser_data: params[:browser],
+                              os_data: params[:os],
+                              remote_ip: params[:ip]
+                            })
         aud = last.aud
       end
       respond_with(resource, { aud: aud })
     else
-      render json: resource.errors, status: 401
+      render json: resource.errors, status: :unauthorized
     end
-  rescue => e
-    render json: { error: I18n.t('api.oops') }, status: 500
+  rescue StandardError => e
+    render json: { error: I18n.t('api.oops') }, status: :internal_server_error
   end
 
   private
@@ -45,7 +45,7 @@ class SessionsController < Devise::SessionsController
     render json: {
       user: resource.for_display,
       jwt: current_token,
-      aud: opts[:aud],
+      aud: opts[:aud]
     }
   end
 

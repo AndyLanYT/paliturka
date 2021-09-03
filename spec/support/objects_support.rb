@@ -1,5 +1,5 @@
 module ObjectsSupport
-  def create_user(params = {})
+  def create_user(_params = {})
     user = User.new(
       email: 'test@example.com',
       password: 'password',
