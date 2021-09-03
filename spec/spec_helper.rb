@@ -1,16 +1,16 @@
 require 'simplecov'
 SimpleCov.start do
-  add_filter "/config/"
-  add_filter "/spec/"
-  add_filter "/lib/devise_custom_failure.rb"
+  add_filter '/config/'
+  add_filter '/spec/'
+  add_filter '/lib/devise_custom_failure.rb'
 
-  add_group "Model", "app/models"
-  add_group "Controllers", "app/controllers"
-  add_group "Helpers", "app/helpers"
-  add_group "Jobs", "app/jobs"
-  add_group "Mailers", "app/mailers"
-  add_group "Serializers", "app/serializers"
-  add_group "Policies", "app/policies"
+  add_group 'Model', 'app/models'
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Helpers', 'app/helpers'
+  add_group 'Jobs', 'app/jobs'
+  add_group 'Mailers', 'app/mailers'
+  add_group 'Serializers', 'app/serializers'
+  add_group 'Policies', 'app/policies'
   # add_group "Views", "app/views"
 end
 
