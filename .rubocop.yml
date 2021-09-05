@@ -40,8 +40,21 @@ Rails/ApplicationController:
 Rails/EnvironmentVariableAccess:
   Enabled: false
 
+Rails/SkipsModelValidations:
+  Exclude:
+    - app/models/concerns/users/allowlist.rb
+    - app/controllers/sessions_controller.rb
+
+Rails/FilePath:
+  Exclude:
+    - spec/rails_helper.rb
+
 RSpec/LetSetup:
   Enabled: false
+
+RSpec/InstanceVariable:
+  Exclude:
+    - spec/*/*
 
 Layout/LineLength:
   Max: 120
@@ -51,6 +64,16 @@ Metrics/BlockLength:
     - config/*
     - spec/**/*
     - config/routes.rb
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Exclude:
+    - app/controllers/passwords_controller.rb
+    - app/controllers/sessions_controller.rb
+    - app/models/concerns/users/allowlist.rb
+    - lib/devise_custom_failure.rb
 
 RSpec/ExampleLength:
   Max: 20

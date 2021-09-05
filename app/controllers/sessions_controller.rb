@@ -27,7 +27,7 @@ class SessionsController < Devise::SessionsController
     else
       render json: resource.errors, status: :unauthorized
     end
-  rescue StandardError => e
+  rescue StandardError
     render json: { error: I18n.t('api.oops') }, status: :internal_server_error
   end
 

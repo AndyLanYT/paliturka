@@ -1,8 +1,4 @@
 class PostsController < ApplicationController
-  def new
-    @post = Post.new
-  end
-
   def index
     posts = Post.all
 
@@ -15,7 +11,14 @@ class PostsController < ApplicationController
     render json: post
   end
 
-  def create; end
+  def create
+    post = current_user.posts.new(post_params)
+    if post.save
+      render json: { status: 'Successfully created!' }
+    else
+      render json: { error: 'Not saved!' }
+    end
+  end
 
   def update
     post = Post.find(params[:id])
