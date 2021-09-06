@@ -21,7 +21,7 @@
           null,
           1,
           null,
-          1,
+          2,
           null,
           null,
           null,
@@ -57,13 +57,13 @@
           null,
           null,
           1,
-          1,
-          1,
+          2,
+          2,
           null,
           null,
           null,
           null,
-          1,
+          2,
           0,
           null,
           null,
@@ -73,12 +73,24 @@
           null,
           null,
           null,
-          1,
+          2,
           null,
           null
         ]
       },
       "/home/andy/Рабочий стол/paliturka/app/helpers/application_helper.rb": {
+        "lines": [
+          1,
+          null
+        ]
+      },
+      "/home/andy/Рабочий стол/paliturka/app/helpers/comments_helper.rb": {
+        "lines": [
+          1,
+          null
+        ]
+      },
+      "/home/andy/Рабочий стол/paliturka/app/helpers/posts_helper.rb": {
         "lines": [
           1,
           null
@@ -133,42 +145,42 @@
           null,
           2,
           2,
-          1,
-          1,
+          2,
+          2,
           null,
           null,
           null,
           null,
-          1,
-          1,
-          1,
-          1,
+          2,
+          2,
+          2,
+          2,
           null,
           null,
           null,
           null,
-          1,
+          2,
           null,
-          1,
-          null,
-          0,
-          null,
+          2,
           null,
           0,
           null,
           null,
-          1,
-          null,
-          1,
-          1,
-          null,
-          null,
+          0,
           null,
           null,
           1,
           null,
+          1,
+          2,
+          null,
+          null,
+          null,
           null,
           1,
+          null,
+          null,
+          2,
           null,
           null,
           null,
@@ -182,21 +194,22 @@
           null
         ]
       },
-      "/home/andy/Рабочий стол/paliturka/app/controllers/ping_controller.rb": {
+      "/home/andy/Рабочий стол/paliturka/app/models/comment.rb": {
         "lines": [
           1,
-
-          1,
-          null,
-          null,
           1,
           1,
           null,
-          null,
-          null,
+          1,
+          null
+        ]
+      },
+      "/home/andy/Рабочий стол/paliturka/app/models/post.rb": {
+        "lines": [
           1,
           1,
           null,
+          1,
           null
         ]
       },
@@ -205,8 +218,25 @@
           1,
           null
         ]
+      },
+      "/home/andy/Рабочий стол/paliturka/app/controllers/ping_controller.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          null,
+          1,
+          1,
+          null,
+          null,
+          null,
+          1,
+          1,
+          null,
+          null
+        ]
       }
     },
-    "timestamp": 1630569636
+    "timestamp": 1630943333
   }
 }
