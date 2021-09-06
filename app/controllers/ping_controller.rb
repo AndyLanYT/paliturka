@@ -3,11 +3,11 @@ class PingController < ApplicationController
 
   # GET /ping
   def index
-    render body: nil, status: 200
+    render body: nil, status: :ok
   end
 
   # GET /ping/auth
   def auth
-    render body: nil, status: 200
+    render body: nil, status: :ok
   end
 end

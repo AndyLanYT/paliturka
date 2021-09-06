@@ -1,7 +1,6 @@
 class PostsController < ApplicationController
-
   def new
-    @post = Post.new 
+    @post = Post.new
   end
 
   def index
@@ -16,8 +15,7 @@ class PostsController < ApplicationController
     render json: post
   end
 
-  def create
-  end
+  def create; end
 
   def update
     post = Post.find(params[:id])
@@ -42,5 +40,4 @@ class PostsController < ApplicationController
   def post_params
     params.require(:post).permit(:body)
   end
-
 end

@@ -5,7 +5,7 @@ class PasswordsController < Devise::PasswordsController
   # Specs No
   def create
     if params[:user] && params[:user][:email].blank?
-      render json: { error: I18n.t('controllers.passwords.email_required') }, status: 406
+      render json: { error: I18n.t('controllers.passwords.email_required') }, status: :not_acceptable
     else
       self.resource = resource_class.send_reset_password_instructions(resource_params)
       if successfully_sent?(resource)
@@ -50,11 +50,11 @@ class PasswordsController < Devise::PasswordsController
     render json: {
       message: I18n.t('controllers.passwords.success'),
       user: resource.for_display,
-      jwt: current_token,
+      jwt: current_token
     }
   end
 
   def respond_with_error(resource)
-    render json: resource.errors, status: 401
+    render json: resource.errors, status: :unauthorized
   end
 end

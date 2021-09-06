@@ -6,7 +6,7 @@ class DeviseCustomFailure < Devise::FailureApp
     path_params = request.path_parameters
     control = path_params[:controller]
     act = path_params[:action]
-    if (control == 'api/v1/ping' && act == 'index')
+    if control == 'api/v1/ping' && act == 'index'
       # HACK! Rails converts 'api/v1/people'.classify => API::V1::Person
       # So we pluralize it and get People or Talks, etc
       classify = control.classify.pluralize
@@ -25,7 +25,7 @@ class DeviseCustomFailure < Devise::FailureApp
   def http_auth_body
     {
       authFailure: true,
-      error: i18n_message,
+      error: i18n_message
     }.to_json
   end
 end

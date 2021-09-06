@@ -10,7 +10,7 @@ class RegistrationsController < Devise::RegistrationsController
     if resource.persisted?
       render json: { message: I18n.t('controllers.registrations.confirm') }
     else
-      render json: resource.errors, status: 401
+      render json: resource.errors, status: :unauthorized
     end
   end
 end

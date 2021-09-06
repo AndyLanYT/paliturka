@@ -11,8 +11,7 @@ class CommentsController < ApplicationController
     render json: comment
   end
 
-  def create
-  end
+  def create; end
 
   def update
     comment = Comment.find(params[:id])
@@ -38,5 +37,4 @@ class CommentsController < ApplicationController
   def comment_params
     params.require(:comment).permit(:body)
   end
-
 end
