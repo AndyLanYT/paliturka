@@ -13,4 +13,6 @@ Rails.application.routes.draw do
       get :auth
     end
   end
+
+  resources :posts
 end
