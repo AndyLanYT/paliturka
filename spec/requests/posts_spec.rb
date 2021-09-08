@@ -16,12 +16,7 @@ RSpec.describe 'Post CRUD', type: :request do
   end
 
   describe 'GET #show' do
-    let(:current_post) do
-      Post.create!(
-        body: 'Just a body',
-        user: user
-      )
-    end
+    let(:current_post) { create_post(user: user) }
 
     it 'response is successful' do
       get "/api/v1/posts/#{current_post.id}", headers: a, as: :json
@@ -32,7 +27,6 @@ RSpec.describe 'Post CRUD', type: :request do
   describe 'POST #create' do
     let(:valid_post_params) do
       {
-        id: 1,
         body: 'Just a body',
         user: user
       }
@@ -45,12 +39,7 @@ RSpec.describe 'Post CRUD', type: :request do
   end
 
   describe 'PUT #update' do
-    let(:current_post) do
-      Post.create!(
-        body: 'Just a body',
-        user_id: user.id
-      )
-    end
+    let(:current_post) { create_post(user: user) }
     let(:valid_post_params) do
       {
         body: 'New body'
@@ -64,12 +53,7 @@ RSpec.describe 'Post CRUD', type: :request do
   end
 
   describe 'DELETE #destroy' do
-    let(:current_post) do
-      Post.create!(
-        body: 'Just a body',
-        user: user
-      )
-    end
+    let(:current_post) { create_post(user: user) }
 
     it 'response is successfull' do
       delete "/api/v1/posts/#{current_post.id}", headers: a, as: :json
