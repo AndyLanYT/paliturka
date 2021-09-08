@@ -1,7 +1,7 @@
 module ObjectsSupport
   def create_user(params = {})
     user = User.new(
-      email: params[:email] || 'test@example.com',  
+      email: params[:email] || 'test@example.com',
       password: params[:password] || 'password'
     )
     user.skip_confirmation!
