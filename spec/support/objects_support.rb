@@ -1,13 +1,19 @@
 module ObjectsSupport
-  def create_user(_params = {})
+  def create_user(params = {})
     user = User.new(
-      email: 'test@example.com',
-      password: 'password',
-      password_confirmation: 'password'
+      email: params[:email] || 'test@example.com',
+      password: params[:password] || 'password'
     )
     user.skip_confirmation!
     user.save!
     user
+  end
+
+  def create_post(params = {})
+    Post.create!(
+      body: params[:body] || 'Just a body',
+      user: params[:user] || create_user
+    )
   end
 end
 

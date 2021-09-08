@@ -11,11 +11,19 @@ class CommentsController < ApplicationController
     render json: comment
   end
 
-  def create; end
+  def create
+    comment = current_user.comments.new(comment_params)
+
+    if comment.save
+      render json: { status: 'Successfully created!' }
+    else
+      render json: { error: 'Not saved!' }
+    end
+  end
 
   def update
     comment = Comment.find(params[:id])
-    comment.update
+    comment.update(comment_params)
 
     render json: comment
   end
@@ -35,6 +43,6 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:body)
+    params.require(:comment).permit(:body, :post)
   end
 end
