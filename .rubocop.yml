@@ -1,0 +1,86 @@
+
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.0
+  Exclude:
+    - app/jobs/candidate_parse_job.rb
+    - bin/**/*
+    - db/**/*
+    - node_modules/**/*
+    - vendor/**/*
+    - spec/fixtures/**/*
+    - tmp/**/*
+    - config/**/*
+    - lib/tasks/auto_annotate_models.rake
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/GlobalStdStream:
+  Enabled: false
+
+Style/RedundantFetchBlock:
+  Enabled: false
+
+Rails/ApplicationController:
+  Enabled: false
+
+Rails/EnvironmentVariableAccess:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - app/models/concerns/users/allowlist.rb
+    - app/controllers/sessions_controller.rb
+
+Rails/FilePath:
+  Exclude:
+    - spec/rails_helper.rb
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/InstanceVariable:
+  Exclude:
+    - spec/*/*
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/BlockLength:
+  Exclude:
+    - config/*
+    - spec/**/*
+    - config/routes.rb
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Exclude:
+    - app/controllers/passwords_controller.rb
+    - app/controllers/sessions_controller.rb
+    - app/models/concerns/users/allowlist.rb
+    - lib/devise_custom_failure.rb
+
+RSpec/ExampleLength:
+  Max: 20
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
