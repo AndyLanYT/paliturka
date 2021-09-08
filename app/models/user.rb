@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   include Users::Allowlist
 
-  has_many :posts
+  has_many :posts, dependent: :destroy
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable

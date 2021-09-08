@@ -1,8 +1,4 @@
-class PostsController < ApplicationController
-  def new
-    @post = Post.new
-  end
-
+class Api::V1::PostsController < ApplicationController
   def index
     posts = Post.all
 

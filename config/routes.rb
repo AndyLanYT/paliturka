@@ -14,5 +14,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :posts
+  namespace :api do
+    namespace :v1 do
+      resources :posts
+    end
+  end
 end
