@@ -84,3 +84,7 @@ RSpec/MultipleExpectations:
 
 Rails/HasManyOrHasOneDependent:
   Enabled: false
+
+Naming/AccessorMethodName:
+  Exclude:
+    - app/controllers/application_controller.rb
