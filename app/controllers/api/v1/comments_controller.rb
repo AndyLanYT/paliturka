@@ -1,4 +1,4 @@
-class CommentsController < ApplicationController
+class Api::V1::CommentsController < ApplicationController
   def index
     comments = Comment.all
 
@@ -12,7 +12,8 @@ class CommentsController < ApplicationController
   end
 
   def create
-    comment = current_user.comments.new(comment_params)
+    post = Post.find(params[:post_id])
+    comment = post.comments.build(comment_params.merge({ user_id: current_user.id, post_id: params[:post_id] }))
 
     if comment.save
       render json: { status: 'Successfully created!' }
@@ -23,6 +24,7 @@ class CommentsController < ApplicationController
 
   def update
     comment = Comment.find(params[:id])
+    authorize comment
     comment.update(comment_params)
 
     render json: comment
@@ -30,6 +32,7 @@ class CommentsController < ApplicationController
 
   def destroy
     comment = Comment.find(params[:id])
+    authorize comment
 
     if comment
       comment.destroy
@@ -43,6 +46,6 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:body, :post)
+    params.require(:comment).permit(:body)
   end
 end

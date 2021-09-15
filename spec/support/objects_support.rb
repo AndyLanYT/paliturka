@@ -13,8 +13,17 @@ module ObjectsSupport
 
   def create_post(params = {})
     Post.create!(
-      body: params[:body] || 'Just a body',
+      body: params[:body] || 'Post body',
       user: params[:user] || create_user
+    )
+  end
+
+  def create_comment(params = {})
+    user = params[:user] || create_user
+    Comment.create!(
+      body: params[:body] || 'Comment body',
+      user: user,
+      post: params[:post] || create_post(user: user)
     )
   end
 end
