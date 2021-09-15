@@ -1,4 +1,4 @@
-class CommentsController < ApplicationController
+class Api::V1::CommentsController < ApplicationController
   def index
     comments = Comment.all
 
@@ -24,6 +24,7 @@ class CommentsController < ApplicationController
 
   def update
     comment = Comment.find(params[:id])
+    authorize comment
     comment.update(comment_params)
 
     render json: comment
@@ -31,6 +32,7 @@ class CommentsController < ApplicationController
 
   def destroy
     comment = Comment.find(params[:id])
+    authorize comment
 
     if comment
       comment.destroy
@@ -44,6 +46,6 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:body, :post)
+    params.require(:comment).permit(:body)
   end
 end
