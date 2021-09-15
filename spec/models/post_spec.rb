@@ -18,4 +18,12 @@ RSpec.describe Post, type: :model do
     post.body = '*' * 101
     expect(post).not_to be_valid
   end
+
+  it 'must belong to a user' do
+    comment = described_class.new(body: nil, user: nil)
+    expect(comment).not_to be_valid
+
+    comment.user = user
+    expect(comment).to be_valid
+  end
 end
