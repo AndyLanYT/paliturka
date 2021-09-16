@@ -75,9 +75,9 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # I added these gems:
 gem 'cancancan'
+gem 'carrierwave'
 gem 'devise'
 gem 'devise-jwt'
+gem 'fog-aws'
 gem 'pundit'
 gem 'rack-cors'
-gem 'carrierwave'
-gem 'fog-aws'
