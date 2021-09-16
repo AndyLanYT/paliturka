@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   include Users::Allowlist
 
+  mount_uploader :avatar, AvatarUploader
+
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
 
