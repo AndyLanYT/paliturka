@@ -67,7 +67,7 @@ RSpec.describe 'Post CRUD', type: :request do
       it 'returns a 401' do
         record = create_post
         put "/api/v1/posts/#{record.id}", params: '{ "post": { "body": "New body" } }'
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
@@ -78,7 +78,7 @@ RSpec.describe 'Post CRUD', type: :request do
         record = create_post({ user: user1 })
         put "/api/v1/posts/#{record.id}", params: '{ "post": { "body": "New body" } }',
                                           headers: get_headers(user2.email, user2.password)
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
@@ -96,10 +96,10 @@ RSpec.describe 'Post CRUD', type: :request do
   # DESTROY
   context 'when DELETE /api/v1/posts/:id' do
     context 'without a user' do
-      it 'returns a 404' do
+      it 'returns a 401' do
         record = create_post
         delete "/api/v1/posts/#{record.id}"
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
@@ -109,7 +109,7 @@ RSpec.describe 'Post CRUD', type: :request do
         user2 = create_user
         record = create_post({ user: user1 })
         delete "/api/v1/posts/#{record.id}", headers: get_headers(user2.email, user2.password)
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
