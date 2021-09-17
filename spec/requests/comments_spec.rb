@@ -66,10 +66,10 @@ RSpec.describe 'Comment CRUD', type: :request do
   # UPDATE
   context 'when PUT /api/v1/posts/:post_id/comments/:id' do
     context 'without a user' do
-      it 'returns a 404' do
+      it 'returns a 401' do
         record = create_comment
         put "/api/v1/posts/#{record.post_id}/comments/#{record.id}", params: '{ "comment": { "body": "New body" } }'
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe 'Comment CRUD', type: :request do
         record = create_comment({ user: user1 })
         put "/api/v1/posts/#{record.post_id}/comments/#{record.id}", params: '{ "comment": { "body": "New body" } }',
                                                                      headers: get_headers(user2.email, user2.password)
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
@@ -99,10 +99,10 @@ RSpec.describe 'Comment CRUD', type: :request do
   # DESTROY
   context 'when DELETE /api/v1/posts/:post_id/comments/:id' do
     context 'without a user' do
-      it 'returns a 404' do
+      it 'returns a 401' do
         record = create_comment
         delete "/api/v1/posts/#{record.post_id}/comments/#{record.id}"
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
@@ -113,7 +113,7 @@ RSpec.describe 'Comment CRUD', type: :request do
         record = create_comment({ user: user1 })
         delete "/api/v1/posts/#{record.post_id}/comments/#{record.id}",
                headers: get_headers(user2.email, user2.password)
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
