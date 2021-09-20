@@ -1,12 +1,12 @@
 # require 'rails_helper'
 
 RSpec.describe 'Post CRUD', type: :request do
-  let!(:user) { create_user(id: 1, email: 'test@example.com', password: 'password', password_confitmation: 'password') }
+  let!(:user) { create(:confirmed_user) }
   let(:auth_headers) { get_headers(user.email, user.password) }
 
   describe 'GET #index' do
     before do
-      Post.create(body: 'Just a body', user: user)
+      Post.create(body: 'Post body', user: user)
     end
 
     it 'response is successful' do
@@ -16,7 +16,10 @@ RSpec.describe 'Post CRUD', type: :request do
   end
 
   describe 'GET #show' do
-    let(:current_post) { create_post(user: user) }
+    let(:current_post) { create(:post, user: user) }
+    before do
+      current_post.user = user
+    end
 
     it 'response is successful' do
       get "/api/v1/posts/#{current_post.id}", headers: auth_headers, as: :json
@@ -27,8 +30,7 @@ RSpec.describe 'Post CRUD', type: :request do
   describe 'POST #create' do
     let(:valid_post_params) do
       {
-        body: 'Just a body',
-        user: user
+        body: 'Post body',
       }
     end
 
@@ -39,21 +41,25 @@ RSpec.describe 'Post CRUD', type: :request do
   end
 
   describe 'PUT #update' do
-    let(:current_post) { create_post(user: user) }
+    let(:current_post) { create(:post, user: user) }
+    before do
+      current_post.user = user
+    end
     let(:valid_post_params) do
       {
-        body: 'New body'
+        body: 'New post body'
       }
     end
 
     it 'response is successful' do
       put "/api/v1/posts/#{current_post.id}", params: { post: valid_post_params }, headers: auth_headers, as: :json
+      byebug
       expect(Post.find(current_post.id).body).to eq valid_post_params[:body]
     end
   end
 
   describe 'DELETE #destroy' do
-    let(:current_post) { create_post(user: user) }
+    let(:current_post) { create(:post, user: user) }
 
     it 'response is successfull' do
       delete "/api/v1/posts/#{current_post.id}", headers: auth_headers, as: :json
@@ -65,7 +71,7 @@ RSpec.describe 'Post CRUD', type: :request do
   context 'when PUT /api/v1/posts/:id' do
     context 'without a user' do
       it 'returns a 401' do
-        record = create_post
+        record = create(:post)
         put "/api/v1/posts/#{record.id}", params: '{ "post": { "body": "New body" } }'
         expect(response).to have_http_status(:unauthorized)
       end
@@ -73,9 +79,9 @@ RSpec.describe 'Post CRUD', type: :request do
 
     context 'with a non-user of post' do
       it 'does not let me update a post' do
-        user1 = create_user
-        user2 = create_user
-        record = create_post({ user: user1 })
+        user1 = create(:user)
+        user2 = create(:user)
+        record = create(:post, user: user1)
         put "/api/v1/posts/#{record.id}", params: '{ "post": { "body": "New body" } }',
                                           headers: get_headers(user2.email, user2.password)
         expect(response).to have_http_status(:unauthorized)
@@ -84,7 +90,7 @@ RSpec.describe 'Post CRUD', type: :request do
 
     context 'with an org owner' do
       it 'lets me update a post' do
-        record = create_post({ user: user })
+        record = create(:post, user: user)
         put "/api/v1/posts/#{record.id}", params: '{ "post": { "body": "New body" } }', headers: auth_headers
         parsed = JSON.parse(response.body, object_class: OpenStruct)
         expect(response).to have_http_status(:ok)
@@ -97,7 +103,7 @@ RSpec.describe 'Post CRUD', type: :request do
   context 'when DELETE /api/v1/posts/:id' do
     context 'without a user' do
       it 'returns a 401' do
-        record = create_post
+        record = create(:post)
         delete "/api/v1/posts/#{record.id}"
         expect(response).to have_http_status(:unauthorized)
       end
@@ -105,9 +111,9 @@ RSpec.describe 'Post CRUD', type: :request do
 
     context 'with a user' do
       it 'does not let me destroy a post' do
-        user1 = create_user
-        user2 = create_user
-        record = create_post({ user: user1 })
+        user1 = create(:user)
+        user2 = create(:user)
+        record = create(:post, user: user1)
         delete "/api/v1/posts/#{record.id}", headers: get_headers(user2.email, user2.password)
         expect(response).to have_http_status(:unauthorized)
       end
@@ -115,7 +121,7 @@ RSpec.describe 'Post CRUD', type: :request do
 
     context 'with a user (owner)' do
       it 'lets me destroy a post' do
-        record = create_post({ user: user })
+        record = create(:post, user: user)
         delete "/api/v1/posts/#{record.id}", headers: auth_headers
         expect(response).to have_http_status(:ok)
       end

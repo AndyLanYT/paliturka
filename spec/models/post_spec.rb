@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
-  let(:user) { create_user }
+  let(:user) { create(:user) }
 
   it 'can not have a body' do
     post = described_class.new(body: nil, user: user)
@@ -20,10 +20,10 @@ RSpec.describe Post, type: :model do
   end
 
   it 'must belong to a user' do
-    comment = described_class.new(body: nil, user: nil)
-    expect(comment).not_to be_valid
+    post = described_class.new(body: nil, user: nil)
+    expect(post).not_to be_valid
 
-    comment.user = user
-    expect(comment).to be_valid
+    post.user = user
+    expect(post).to be_valid
   end
 end

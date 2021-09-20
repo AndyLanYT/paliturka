@@ -9,13 +9,7 @@ RSpec.describe SessionsController, type: :controller do
     }
   end
 
-  let(:user) do
-    User.create!(
-      email: 'email@example.com',
-      password: 'password',
-      password_confirmation: 'password'
-    )
-  end
+  let(:user) { create(:confirmed_user) }
 
   before do
     @request.env['devise.mapping'] = Devise.mappings[:user]

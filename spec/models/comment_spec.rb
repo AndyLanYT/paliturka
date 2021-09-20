@@ -1,8 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
-  let(:user) { create_user }
-  let(:current_post) { create_post(user: user) }
+  let(:user) { create(:user) }
+  let(:current_post) { create(:post) }
+
+  before do
+    current_post.user = user
+  end
 
   it 'has a body length maximum 100 charecters' do
     comment = described_class.new(body: nil, user: user, post: current_post)

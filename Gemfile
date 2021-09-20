@@ -44,6 +44,8 @@ group :development, :test do
   gem 'rubocop-rails', '~> 2.10', '>= 2.10.1'
   gem 'rubocop-rspec', '~> 2.3'
   gem 'spring-commands-rspec'
+  gem 'factory_bot_rails'
+  gem 'faker'
 end
 
 group :development do
@@ -68,8 +70,6 @@ group :test do
   # I added these gems
   gem 'database_cleaner-active_record'
   gem 'simplecov', require: false
-  gem 'factory_bot_rails'
-  gem 'faker'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
