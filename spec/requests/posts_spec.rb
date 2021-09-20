@@ -17,9 +17,6 @@ RSpec.describe 'Post CRUD', type: :request do
 
   describe 'GET #show' do
     let(:current_post) { create(:post, user: user) }
-    before do
-      current_post.user = user
-    end
 
     it 'response is successful' do
       get "/api/v1/posts/#{current_post.id}", headers: auth_headers, as: :json
@@ -30,7 +27,7 @@ RSpec.describe 'Post CRUD', type: :request do
   describe 'POST #create' do
     let(:valid_post_params) do
       {
-        body: 'Post body',
+        body: 'Post body'
       }
     end
 
@@ -42,9 +39,6 @@ RSpec.describe 'Post CRUD', type: :request do
 
   describe 'PUT #update' do
     let(:current_post) { create(:post, user: user) }
-    before do
-      current_post.user = user
-    end
     let(:valid_post_params) do
       {
         body: 'New post body'
@@ -53,7 +47,6 @@ RSpec.describe 'Post CRUD', type: :request do
 
     it 'response is successful' do
       put "/api/v1/posts/#{current_post.id}", params: { post: valid_post_params }, headers: auth_headers, as: :json
-      byebug
       expect(Post.find(current_post.id).body).to eq valid_post_params[:body]
     end
   end
