@@ -1,24 +1,37 @@
-class LikesController < ApplicationController
+class Api::V1::LikesController < ApplicationController
   def create
-    post = Post.find(params[:post_id])
+    post = Post.find_by(id: params[:post_id])
 
-    if already_liked?
-      render json: { error: 'Can\'t be liked twice!' }
+    if post
+      if already_liked?
+        render json: { error: 'Can\'t be liked twice!' }
+      else
+        post.likes.create(user_id: current_user.id)
+        render json: { status: 'Successfuly liked!' }
+      end
     else
-      post.likes.create(user_id: current_user.id)
-      render json: { status: 'Successfuly liked!' }
+      render json: { status: 'Post not found' }, status: :not_found
     end
   end
 
   def destroy
-    post = Post.find(params[:post_id])
-    like = post.likes.find(params[:id])
+    post = Post.find_by(id: params[:post_id])
+    
+    if post
+      like = post.likes.find_by(id: params[:id])
 
-    if already_liked?
-      like.destroy
-      render json: { status: 'Successfuly unliked!' }
+      if like
+        if already_liked?
+          like.destroy
+          render json: { status: 'Successfuly unliked!' }
+        else
+          render json: { status: 'Can\'t be unliked' }
+        end
+      else
+        render json: { status: 'Like not found' }, status: :not_found
+      end
     else
-      render json: { status: 'Can\'t be unliked' }
+      render json: { status: 'Post not found' }, status: :not_found
     end
   end
 
