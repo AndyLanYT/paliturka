@@ -8,7 +8,11 @@ class Api::V1::PostsController < ApplicationController
   def show
     post = Post.find(params[:id])
 
-    render json: post
+    if post
+      render json: post
+    else
+      render json: { status: :not_found }
+    end
   end
 
   def create
@@ -23,21 +27,26 @@ class Api::V1::PostsController < ApplicationController
 
   def update
     post = Post.find(params[:id])
-    authorize post
-    post.update(post_params)
 
-    render json: post
+    if post
+      authorize post
+      post.update(post_params)
+
+      render json: post
+    else
+      render json: {}, status: :not_found
+    end
   end
 
   def destroy
     post = Post.find(params[:id])
-    authorize post
 
     if post
+      authorize post
       post.destroy
       render json: { status: 'Successfully destroyed!' }
     else
-      render json: { error: 'Post not found!' }
+      render json: { error: 'Post not found' }, status: :not_found
     end
   end
 

@@ -1,8 +1,8 @@
 # require 'rails_helper'
 
 RSpec.describe 'Comment CRUD', type: :request do
-  let!(:user) { create_user(id: 1, email: 'test@example.com', password: 'password', password_confitmation: 'password') }
-  let!(:current_post) { create_post(user: user) }
+  let!(:user) { create(:confirmed_user) }
+  let!(:current_post) { create(:post, user: user) }
   let(:auth_headers) { get_headers(user.email, user.password) }
 
   describe 'GET #index' do
@@ -17,7 +17,7 @@ RSpec.describe 'Comment CRUD', type: :request do
   end
 
   describe 'GET #show' do
-    let(:comment) { create_comment(user: user, post: current_post) }
+    let(:comment) { create(:comment, user: user, post: current_post) }
 
     it 'response is successful' do
       get "/api/v1/posts/#{comment.post_id}/comments/#{comment.id}"
@@ -40,10 +40,10 @@ RSpec.describe 'Comment CRUD', type: :request do
   end
 
   describe 'PUT #update' do
-    let(:comment) { create_comment(user: user) }
+    let(:comment) { create(:comment, user: user, post: current_post) }
     let(:valid_comment_params) do
       {
-        body: 'New body'
+        body: 'New comment body'
       }
     end
 
@@ -55,7 +55,7 @@ RSpec.describe 'Comment CRUD', type: :request do
   end
 
   describe 'DELETE #destroy' do
-    let(:comment) { create_comment(user: user, post: current_post) }
+    let(:comment) { create(:comment, user: user, post: current_post) }
 
     it 'response is successfull' do
       delete "/api/v1/posts/#{comment.post_id}/comments/#{comment.id}", headers: auth_headers, as: :json
@@ -67,7 +67,7 @@ RSpec.describe 'Comment CRUD', type: :request do
   context 'when PUT /api/v1/posts/:post_id/comments/:id' do
     context 'without a user' do
       it 'returns a 401' do
-        record = create_comment
+        record = create(:comment)
         put "/api/v1/posts/#{record.post_id}/comments/#{record.id}", params: '{ "comment": { "body": "New body" } }'
         expect(response).to have_http_status(:unauthorized)
       end
@@ -75,9 +75,9 @@ RSpec.describe 'Comment CRUD', type: :request do
 
     context 'with a non-user of comment' do
       it 'does not let me update a comment' do
-        user1 = create_user
-        user2 = create_user
-        record = create_comment({ user: user1 })
+        user1 = create(:user)
+        user2 = create(:user)
+        record = create(:comment, user: user1)
         put "/api/v1/posts/#{record.post_id}/comments/#{record.id}", params: '{ "comment": { "body": "New body" } }',
                                                                      headers: get_headers(user2.email, user2.password)
         expect(response).to have_http_status(:unauthorized)
@@ -86,7 +86,7 @@ RSpec.describe 'Comment CRUD', type: :request do
 
     context 'with an org owner' do
       it 'lets me update a comment' do
-        record = create_comment({ user: user })
+        record = create(:comment, user: user)
         put "/api/v1/posts/#{record.post_id}/comments/#{record.id}", params: '{ "comment": { "body": "New body" } }',
                                                                      headers: auth_headers
         parsed = JSON.parse(response.body, object_class: OpenStruct)
@@ -100,7 +100,7 @@ RSpec.describe 'Comment CRUD', type: :request do
   context 'when DELETE /api/v1/posts/:post_id/comments/:id' do
     context 'without a user' do
       it 'returns a 401' do
-        record = create_comment
+        record = create(:comment)
         delete "/api/v1/posts/#{record.post_id}/comments/#{record.id}"
         expect(response).to have_http_status(:unauthorized)
       end
@@ -108,9 +108,9 @@ RSpec.describe 'Comment CRUD', type: :request do
 
     context 'with a user' do
       it 'does not let me destroy a comment' do
-        user1 = create_user
-        user2 = create_user
-        record = create_comment({ user: user1 })
+        user1 = create(:user)
+        user2 = create(:user)
+        record = create(:comment, user: user1, post: current_post)
         delete "/api/v1/posts/#{record.post_id}/comments/#{record.id}",
                headers: get_headers(user2.email, user2.password)
         expect(response).to have_http_status(:unauthorized)
@@ -119,7 +119,7 @@ RSpec.describe 'Comment CRUD', type: :request do
 
     context 'with a user (owner)' do
       it 'lets me destroy a comment' do
-        record = create_comment({ user: user })
+        record = create(:comment, user: user, post: current_post)
         delete "/api/v1/posts/#{record.post_id}/comments/#{record.id}", headers: auth_headers
         expect(response).to have_http_status(:ok)
       end

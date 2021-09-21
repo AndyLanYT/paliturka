@@ -4,7 +4,7 @@ require 'carrierwave/test/matchers'
 describe AvatarUploader do
   include CarrierWave::Test::Matchers
 
-  let(:user) { create_user }
+  let(:user) { create(:confirmed_user) }
   let(:uploader) { described_class.new(user, :avatar) }
 
   before do

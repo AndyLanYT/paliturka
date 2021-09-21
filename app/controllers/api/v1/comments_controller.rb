@@ -8,33 +8,47 @@ class Api::V1::CommentsController < ApplicationController
   def show
     comment = Comment.find(params[:id])
 
-    render json: comment
+    if comment
+      render json: comment
+    else
+      render json: { status: 'Comment not found' }, status: :not_found
+    end
   end
 
   def create
     post = Post.find(params[:post_id])
-    comment = post.comments.build(comment_params.merge({ user_id: current_user.id, post_id: params[:post_id] }))
 
-    if comment.save
-      render json: { status: 'Successfully created!' }
+    if post
+      comment = post.comments.build(comment_params.merge({ user_id: current_user.id, post_id: params[:post_id] }))
+
+      if comment.save
+        render json: { status: 'Successfully created!' }
+      else
+        render json: { error: 'Not saved!' }
+      end
     else
-      render json: { error: 'Not saved!' }
+      render json: { status: 'Post not found' }, status: :not_found
     end
   end
 
   def update
     comment = Comment.find(params[:id])
-    authorize comment
-    comment.update(comment_params)
 
-    render json: comment
+    if comment
+      authorize comment
+      comment.update(comment_params)
+
+      render json: comment
+    else
+      render json: { status: 'Comment not found' }, status: :not_found
+    end
   end
 
   def destroy
     comment = Comment.find(params[:id])
-    authorize comment
 
     if comment
+      authorize comment
       comment.destroy
 
       render json: { status: 'Successfully destroyed!' }

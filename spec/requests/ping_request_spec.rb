@@ -12,9 +12,9 @@ RSpec.describe 'Pings', type: :request do
   end
 
   it 'Returns a status of 200 if logged in' do
-    user = create_user
-    headers = get_headers(user.email, user.password)
-    get '/ping/auth/', headers: headers
+    user = create(:confirmed_user)
+    auth_headers = get_headers(user.email, user.password)
+    get '/ping/auth/', headers: auth_headers
     expect(response).to have_http_status(:ok)
   end
 end

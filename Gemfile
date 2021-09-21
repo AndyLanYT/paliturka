@@ -34,6 +34,8 @@ group :development, :test do
 
   # I added these gems
   gem 'dotenv-rails'
+  gem 'factory_bot_rails'
+  gem 'faker'
   gem 'fasterer', '~> 0.9.0'
   gem 'overcommit', '~> 0.58.0'
   gem 'parallel_tests'
