@@ -7,7 +7,7 @@ class Api::V1::PostsController < ApplicationController
 
   def show
     post = Post.find(params[:id])
-    
+
     if post
       render json: post
     else
@@ -27,7 +27,7 @@ class Api::V1::PostsController < ApplicationController
 
   def update
     post = Post.find(params[:id])
-    
+
     if post
       authorize post
       post.update(post_params)
@@ -40,7 +40,7 @@ class Api::V1::PostsController < ApplicationController
 
   def destroy
     post = Post.find(params[:id])
-    
+
     if post
       authorize post
       post.destroy

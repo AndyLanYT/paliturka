@@ -7,7 +7,7 @@ class Api::V1::CommentsController < ApplicationController
 
   def show
     comment = Comment.find(params[:id])
-  
+
     if comment
       render json: comment
     else
@@ -17,10 +17,10 @@ class Api::V1::CommentsController < ApplicationController
 
   def create
     post = Post.find(params[:post_id])
-  
+
     if post
       comment = post.comments.build(comment_params.merge({ user_id: current_user.id, post_id: params[:post_id] }))
-  
+
       if comment.save
         render json: { status: 'Successfully created!' }
       else
@@ -33,7 +33,7 @@ class Api::V1::CommentsController < ApplicationController
 
   def update
     comment = Comment.find(params[:id])
-  
+
     if comment
       authorize comment
       comment.update(comment_params)
@@ -46,7 +46,7 @@ class Api::V1::CommentsController < ApplicationController
 
   def destroy
     comment = Comment.find(params[:id])
-  
+
     if comment
       authorize comment
       comment.destroy
