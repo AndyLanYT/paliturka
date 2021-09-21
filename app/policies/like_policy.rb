@@ -5,6 +5,10 @@ class LikePolicy < ApplicationPolicy
     end
   end
 
+  def create?
+    record.user != user if user
+  end
+
   def destroy?
     record.user == user if user
   end

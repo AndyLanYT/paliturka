@@ -5,11 +5,15 @@ class CommentPolicy < ApplicationPolicy
     end
   end
 
-  def destroy?
-    record.user == user || user.admin if user
+  def create?
+    user
   end
 
   def update?
     record.user == user || user.admin if user
+  end
+  
+  def destroy?
+    record.user == user || record.post.user == user || user.admin if user
   end
 end
