@@ -1,5 +1,6 @@
 class Api::V1::CommentsController < ApplicationController
   def index
+    authorize Comment, :index?
     comments = Comment.all
 
     render json: comments
@@ -7,8 +8,9 @@ class Api::V1::CommentsController < ApplicationController
 
   def show
     comment = Comment.find(params[:id])
-
+    
     if comment
+      authorize comment, :show?
       render json: comment
     else
       render json: { status: 'Comment not found' }, status: :not_found
@@ -19,6 +21,7 @@ class Api::V1::CommentsController < ApplicationController
     post = Post.find(params[:post_id])
 
     if post
+      authorize Comment, :create?
       comment = post.comments.build(comment_params.merge({ user_id: current_user.id, post_id: params[:post_id] }))
 
       if comment.save
@@ -35,7 +38,7 @@ class Api::V1::CommentsController < ApplicationController
     comment = Comment.find(params[:id])
 
     if comment
-      authorize comment
+      authorize comment, :update?
       comment.update(comment_params)
 
       render json: comment
@@ -48,7 +51,7 @@ class Api::V1::CommentsController < ApplicationController
     comment = Comment.find(params[:id])
 
     if comment
-      authorize comment
+      authorize comment, :destroy?
       comment.destroy
 
       render json: { status: 'Successfully destroyed!' }

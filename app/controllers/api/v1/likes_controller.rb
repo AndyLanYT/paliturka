@@ -21,6 +21,7 @@ class Api::V1::LikesController < ApplicationController
       like = post.likes.find_by(id: params[:id])
 
       if like
+        authorize like, :destroy?
         if already_liked?
           like.destroy
           render json: { status: 'Successfuly unliked!' }

@@ -1,5 +1,6 @@
 class Api::V1::PostsController < ApplicationController
   def index
+    authorize Post, :index?
     posts = Post.all
 
     render json: posts
@@ -7,8 +8,9 @@ class Api::V1::PostsController < ApplicationController
 
   def show
     post = Post.find(params[:id])
-
+    
     if post
+      authorize post, :show?
       render json: post
     else
       render json: { status: :not_found }
@@ -16,6 +18,7 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def create
+    authorize Post, :create?
     post = current_user.posts.new(post_params)
 
     if post.save
@@ -29,7 +32,7 @@ class Api::V1::PostsController < ApplicationController
     post = Post.find(params[:id])
 
     if post
-      authorize post
+      authorize post, :update?
       post.update(post_params)
 
       render json: post
@@ -42,7 +45,7 @@ class Api::V1::PostsController < ApplicationController
     post = Post.find(params[:id])
 
     if post
-      authorize post
+      authorize post, :destroy?
       post.destroy
       render json: { status: 'Successfully destroyed!' }
     else
