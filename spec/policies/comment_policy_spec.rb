@@ -5,10 +5,7 @@ RSpec.describe CommentPolicy, type: :policy do
 
   let(:visitor) { nil }
   let(:user) { create(:user) }
-  let(:commentator) { create(:user) }
   let(:admin) { create(:user, admin: true) }
-  let(:post) { create(:post, user: user) }
-  let(:comment) { create(:comment, user: commentator, post: post) }
 
   permissions :index? do
     context 'when user is authenticated' do
@@ -60,6 +57,10 @@ RSpec.describe CommentPolicy, type: :policy do
 
   permissions :update? do
     context 'when user is authenticated' do
+      let(:commentator) { create(:user) }
+      let(:post) { create(:post, user: user) }
+      let(:comment) { create(:comment, user: commentator, post: post) }
+
       it 'grants access if user\'s comment' do
         expect(subject).to permit(commentator, comment)
       end
@@ -78,6 +79,10 @@ RSpec.describe CommentPolicy, type: :policy do
     let(:another_user) { create(:user) }
 
     context 'when user is authenticated' do
+      let(:commentator) { create(:user) }
+      let(:post) { create(:post, user: user) }
+      let(:comment) { create(:comment, user: commentator, post: post) }
+
       it 'grants access if user is an admin' do
         expect(subject).to permit(admin, comment)
       end
@@ -96,7 +101,7 @@ RSpec.describe CommentPolicy, type: :policy do
     end
 
     context 'when user is not authenticated' do
-      it { expect(subject).not_to permit(visitor, comment) }
+      it { expect(subject).not_to permit(visitor) }
     end
   end
 end

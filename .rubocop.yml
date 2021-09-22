@@ -57,6 +57,12 @@ RSpec/InstanceVariable:
   Exclude:
     - spec/*/*
 
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
 Layout/LineLength:
   Max: 120
 

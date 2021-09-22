@@ -8,7 +8,7 @@ class Api::V1::PostsController < ApplicationController
 
   def show
     post = Post.find(params[:id])
-    
+
     if post
       authorize post, :show?
       render json: post

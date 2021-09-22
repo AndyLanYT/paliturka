@@ -6,7 +6,7 @@ RSpec.describe LikePolicy, type: :policy do
   let(:user) { create(:user) }
   let(:another_user) { create(:user) }
   let(:post) { create(:post, user: user) }
-  
+
   permissions :create? do
     context 'when user is authenticated' do
       it 'grants access if not user\'s post' do

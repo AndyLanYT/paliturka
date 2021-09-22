@@ -8,7 +8,7 @@ class Api::V1::CommentsController < ApplicationController
 
   def show
     comment = Comment.find(params[:id])
-    
+
     if comment
       authorize comment, :show?
       render json: comment
