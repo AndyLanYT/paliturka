@@ -1,4 +1,6 @@
 class Api::V1::PostsController < ApplicationController
+  before_action :find_post, only: %i[show update destroy]
+
   def index
     authorize Post, :index?
     posts = Post.all
@@ -7,55 +9,37 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def show
-    post = Post.find(params[:id])
+    authorize @post, :show?
+    post = PostProcessing::Finder.find!(@post)
 
-    if post
-      authorize post, :show?
-      render json: post
-    else
-      render json: { status: :not_found }
-    end
+    render json: post
   end
 
   def create
     authorize Post, :create?
-    post = current_user.posts.new(post_params)
-
-    if post.save
-      render json: { status: 'Successfully created!' }
-    else
-      render json: { error: 'Not saved!' }
-    end
+    post = PostProcessing::Creator.create!(post_params, current_user)
+    render json: post
   end
 
   def update
-    post = Post.find(params[:id])
-
-    if post
-      authorize post, :update?
-      post.update(post_params)
-
-      render json: post
-    else
-      render json: {}, status: :not_found
-    end
+    authorize @post, :update?
+    post = PostProcessing::Updater.update!(@post, post_params)
+    render json: post
   end
 
   def destroy
-    post = Post.find(params[:id])
-
-    if post
-      authorize post, :destroy?
-      post.destroy
-      render json: { status: 'Successfully destroyed!' }
-    else
-      render json: { error: 'Post not found' }, status: :not_found
-    end
+    authorize @post, :destroy?
+    PostProcessing::Destroyer.destroy!(@post)
+    render json: { id: params[:id], message: 'Successfully destroyed!' }
   end
 
   private
 
   def post_params
     params.require(:post).permit(:body)
+  end
+
+  def find_post
+    @post = Post.find_by(id: params[:id])
   end
 end
