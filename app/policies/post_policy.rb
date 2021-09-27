@@ -5,13 +5,23 @@ class PostPolicy < ApplicationPolicy
     end
   end
 
-  # Only an user can destroy their own
-  def destroy?
-    record.user == user
+  def index?
+    true
   end
 
-  # Only an user can update their own
+  def show?
+    user
+  end
+
+  def create?
+    user
+  end
+
   def update?
-    record.user == user
+    record.user == user if user
+  end
+
+  def destroy?
+    record.user == user || user.admin if user
   end
 end

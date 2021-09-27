@@ -1,4 +1,5 @@
 require 'simplecov'
+require 'pundit/rspec'
 SimpleCov.start do
   add_filter '/config/'
   add_filter '/spec/'
