@@ -1,18 +1,12 @@
 class ProfilesController < ApplicationController
-  def index
-    authorize Profile, :index?
-    profiles = Profiles.all
-    render json: profiles
-  end
-
   def show
-    profile = Profile.find_by(id: params[:id])
+    profile = Profile.find_by(user_id: params[:user_id])
     authorize profile, :show?
     render json: profile
   end
 
   def update
-    profile = Profile.find_by(id: params[:id])
+    profile = Profile.find_by(user_id: params[:user_id])
 
     if profile
       authorize profile, :update?
