@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_one :profile, dependent: :destroy
+  after_create :init_profile
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -25,5 +27,9 @@ class User < ApplicationRecord
       email: email,
       id: id
     }
+  end
+
+  def init_profile
+    create_profile!
   end
 end
