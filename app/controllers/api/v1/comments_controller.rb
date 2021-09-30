@@ -1,4 +1,6 @@
 class Api::V1::CommentsController < ApplicationController
+  before_action :find_comment, only: %i[show update destroy]
+
   def index
     authorize Comment, :index?
     comments = Comment.all
@@ -7,62 +9,37 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def show
-    comment = Comment.find(params[:id])
-
-    if comment
-      authorize comment, :show?
-      render json: comment
-    else
-      render json: { status: 'Comment not found' }, status: :not_found
-    end
+    authorize @comment, :show?
+    comment = CommentProcessing::Finder.find!(@comment)
+    render json: comment
   end
 
   def create
-    post = Post.find(params[:post_id])
-
-    if post
-      authorize Comment, :create?
-      comment = post.comments.build(comment_params.merge({ user_id: current_user.id, post_id: params[:post_id] }))
-
-      if comment.save
-        render json: { status: 'Successfully created!' }
-      else
-        render json: { error: 'Not saved!' }
-      end
-    else
-      render json: { status: 'Post not found' }, status: :not_found
-    end
+    post = Post.find_by(id: params[:post_id])
+    authorize Comment, :create?
+    comment = CommentProcessing::Creator.create!(comment_params, current_user, post)
+    render json: comment
   end
 
   def update
-    comment = Comment.find(params[:id])
-
-    if comment
-      authorize comment, :update?
-      comment.update(comment_params)
-
-      render json: comment
-    else
-      render json: { status: 'Comment not found' }, status: :not_found
-    end
+    authorize @comment, :update?
+    comment = CommentProcessing::Updater.update!(@comment, comment_params)
+    render json: comment
   end
 
   def destroy
-    comment = Comment.find(params[:id])
-
-    if comment
-      authorize comment, :destroy?
-      comment.destroy
-
-      render json: { status: 'Successfully destroyed!' }
-    else
-      render json: { error: 'Comment not found!' }, status: :not_found
-    end
+    authorize @comment, :destroy?
+    CommentProcessing::Destroyer.destroy!(@comment)
+    render json: { id: params[:id], message: 'Successfuly destroyed!' }
   end
 
   private
 
   def comment_params
     params.require(:comment).permit(:body)
+  end
+
+  def find_comment
+    @comment = Comment.find_by(id: params[:id])
   end
 end
