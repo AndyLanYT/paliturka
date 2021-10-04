@@ -1,6 +1,4 @@
 class Api::V1::PostsController < ApplicationController
-  before_action :find_post, only: %i[show update destroy]
-
   def index
     authorize Post, :index?
     posts = Post.all
@@ -9,8 +7,8 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def show
-    authorize @post, :show?
-    post = PostProcessing::Finder.find!(@post)
+    post = Post.find_by(id: params[:id])
+    authorize post, :show?
 
     render json: post
   end
@@ -22,14 +20,16 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def update
-    authorize @post, :update?
-    post = PostProcessing::Updater.update!(@post, post_params)
-    render json: post
+    post = Post.find_by(id: params[:id])
+    authorize post, :update?
+    updated_post = PostProcessing::Updater.update!(post, post_params)
+    render json: updated_post
   end
 
   def destroy
-    authorize @post, :destroy?
-    PostProcessing::Destroyer.destroy!(@post)
+    post = Post.find_by(id: params[:id])
+    authorize post, :destroy?
+    PostProcessing::Destroyer.destroy!(post)
     render json: { id: params[:id], message: 'Successfully destroyed!' }
   end
 
@@ -37,9 +37,5 @@ class Api::V1::PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:body)
-  end
-
-  def find_post
-    @post = Post.find_by(id: params[:id])
   end
 end

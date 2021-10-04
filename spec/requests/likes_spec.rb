@@ -6,7 +6,7 @@ RSpec.describe 'Likes', type: :request do
   let(:auth_headers) { get_headers(user.email, user.password) }
 
   describe 'POST /api/v1/posts/:post_id/likes' do
-    context 'when we send correct params' do      
+    context 'when we send correct params' do
       let(:another_post) { create(:post) }
 
       it 'can\'t be liked by owner of the post' do
@@ -25,7 +25,9 @@ RSpec.describe 'Likes', type: :request do
         post "/api/v1/posts/#{another_post.id}/likes", headers: auth_headers
         post "/api/v1/posts/#{another_post.id}/likes", headers: auth_headers
         parsed = JSON.parse(response.body, object_class: OpenStruct)
+        byebug
         expect(response).to have_http_status(:ok)
+        expect(another_post.likes.count).to eq(2)
       end
     end
   end

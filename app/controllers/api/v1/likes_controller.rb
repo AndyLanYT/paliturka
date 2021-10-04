@@ -10,7 +10,7 @@ class Api::V1::LikesController < ApplicationController
     post = Post.find_by(id: params[:post_id])
     like = Like.find_by(id: params[:id])
     authorize like, :destroy?
-    LikeProcessing::Destroyer.destroy!(params, current_user)
+    LikeProcessing::Destroyer.destroy!(like, post, current_user)
     render json: { status: 'Successfuly unliked!' }
   end
 

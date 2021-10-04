@@ -1,6 +1,4 @@
 class Api::V1::CommentsController < ApplicationController
-  before_action :find_comment, only: %i[show update destroy]
-
   def index
     authorize Comment, :index?
     comments = Comment.all
@@ -9,8 +7,8 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def show
-    authorize @comment, :show?
-    comment = CommentProcessing::Finder.find!(@comment)
+    comment = Comment.find_by(id: params[:id])
+    authorize comment, :show?
     render json: comment
   end
 
@@ -22,14 +20,16 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def update
-    authorize @comment, :update?
-    comment = CommentProcessing::Updater.update!(@comment, comment_params)
+    comment = Comment.find_by(id: params[:id])
+    authorize comment, :update?
+    comment = CommentProcessing::Updater.update!(comment, comment_params)
     render json: comment
   end
 
   def destroy
-    authorize @comment, :destroy?
-    CommentProcessing::Destroyer.destroy!(@comment)
+    comment = Comment.find_by(id: params[:id])
+    authorize comment, :destroy?
+    CommentProcessing::Destroyer.destroy!(comment)
     render json: { id: params[:id], message: 'Successfuly destroyed!' }
   end
 
@@ -37,9 +37,5 @@ class Api::V1::CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:body)
-  end
-
-  def find_comment
-    @comment = Comment.find_by(id: params[:id])
   end
 end
