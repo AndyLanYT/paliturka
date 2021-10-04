@@ -6,7 +6,7 @@ RSpec.describe 'Profiles', type: :request do
 
   describe 'GET #show' do
     it 'response is successful' do
-      get "/users/#{user.id}/profile", headers: auth_headers, as: :json
+      get "/api/v1/users/#{user.id}/profile", headers: auth_headers, as: :json
       expect(Profile.find(user.id).info).to eq user.profile.info
     end
   end
@@ -21,7 +21,7 @@ RSpec.describe 'Profiles', type: :request do
     end
 
     it 'response is successful' do
-      put "/users/#{user.id}/profile", params: { profile: valid_profile_params }, headers: auth_headers, as: :json
+      put "/api/v1/users/#{user.id}/profile", params: { profile: valid_profile_params }, headers: auth_headers, as: :json
       expect(Profile.find_by(user_id: user.id).info).to eq valid_profile_params[:info]
       expect(Profile.find_by(user_id: user.id).first_name).to eq valid_profile_params[:first_name]
       expect(Profile.find_by(user_id: user.id).last_name).to eq valid_profile_params[:last_name]
@@ -35,7 +35,7 @@ RSpec.describe 'Profiles', type: :request do
         user1 = create(:user)
         user2 = create(:user)
         record = user1.profile
-        put "/users/#{record.user.id}/profile",
+        put "/api/v1/users/#{record.user.id}/profile",
             params: '{ "profile": { "first_name": "Carl", "last_name": "Son", "info": "Helicopter" } }',
             headers: get_headers(user2.email, user2.password)
         expect(response).to have_http_status(:unauthorized)
@@ -45,7 +45,7 @@ RSpec.describe 'Profiles', type: :request do
     context 'with an org owner' do
       it 'lets me update a profile' do
         record = user.profile
-        put "/users/#{record.user.id}/profile",
+        put "/api/v1/users/#{record.user.id}/profile",
             params: '{ "profile": { "first_name": "Carl", "last_name": "Son", "info": "Helicopter" } }',
             headers: auth_headers
         parsed = JSON.parse(response.body, object_class: OpenStruct)
