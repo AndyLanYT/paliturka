@@ -7,50 +7,33 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def show
-    post = Post.find(params[:id])
+    post = Post.find_by(id: params[:id])
+    authorize post, :show?
 
-    if post
-      authorize post, :show?
-      render json: post
-    else
-      render json: { status: :not_found }
-    end
+    render json: post
   end
 
   def create
     authorize Post, :create?
-    post = current_user.posts.new(post_params)
+    post = PostProcessing::Creator.create!(post_params, current_user)
 
-    if post.save
-      render json: { status: 'Successfully created!' }
-    else
-      render json: { error: 'Not saved!' }
-    end
+    render json: post
   end
 
   def update
-    post = Post.find(params[:id])
+    post = Post.find_by(id: params[:id])
+    authorize post, :update?
+    updated_post = PostProcessing::Updater.update!(post, post_params)
 
-    if post
-      authorize post, :update?
-      post.update(post_params)
-
-      render json: post
-    else
-      render json: {}, status: :not_found
-    end
+    render json: updated_post
   end
 
   def destroy
-    post = Post.find(params[:id])
+    post = Post.find_by(id: params[:id])
+    authorize post, :destroy?
+    PostProcessing::Destroyer.destroy!(post)
 
-    if post
-      authorize post, :destroy?
-      post.destroy
-      render json: { status: 'Successfully destroyed!' }
-    else
-      render json: { error: 'Post not found' }, status: :not_found
-    end
+    render json: { id: params[:id], message: 'Successfully destroyed!' }
   end
 
   private

@@ -1,20 +1,17 @@
-class ProfilesController < ApplicationController
+class Api::V1::ProfilesController < ApplicationController
   def show
     profile = Profile.find_by(user_id: params[:user_id])
     authorize profile, :show?
+
     render json: profile
   end
 
   def update
     profile = Profile.find_by(user_id: params[:user_id])
+    authorize profile, :update?
+    updated_profile = ProfileProcessing::Updater.update!(profile, profile_params)
 
-    if profile
-      authorize profile, :update?
-      profile.update(profile_params)
-      render json: profile
-    else
-      render json: { status: 'Profile not found!!' }, status: :not_found
-    end
+    render json: updated_profile
   end
 
   private

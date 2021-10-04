@@ -14,15 +14,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users do
-    resource :profile
-  end
-
+  
   namespace :api do
     namespace :v1 do
       resources :posts do
         resources :comments
         resources :likes
+      end
+      resources :users do
+        resource :profile
       end
     end
   end
