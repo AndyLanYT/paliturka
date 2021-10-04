@@ -10,7 +10,7 @@ class PostPolicy < ApplicationPolicy
   end
 
   def show?
-    user
+    record.user == user || user.admin || !record.hidden if user
   end
 
   def create?

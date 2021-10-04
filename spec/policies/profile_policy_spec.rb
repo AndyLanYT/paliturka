@@ -38,7 +38,7 @@ RSpec.describe ProfilePolicy, type: :policy do
     context 'when user is not authenticated' do
       let(:visitor) { nil }
 
-      it { expect(subject).not_to permit(visitor) }
+      it { expect(subject).not_to permit(visitor, user.profile) }
     end
   end
 end

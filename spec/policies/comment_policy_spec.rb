@@ -58,8 +58,8 @@ RSpec.describe CommentPolicy, type: :policy do
   permissions :update? do
     context 'when user is authenticated' do
       let(:commentator) { create(:user) }
-      let(:post) { create(:post, user: user) }
-      let(:comment) { create(:comment, user: commentator, post: post) }
+      let(:current_post) { create(:post, user: user) }
+      let(:comment) { create(:comment, user: commentator, post: current_post) }
 
       it 'grants access if user\'s comment' do
         expect(subject).to permit(commentator, comment)
@@ -80,8 +80,8 @@ RSpec.describe CommentPolicy, type: :policy do
 
     context 'when user is authenticated' do
       let(:commentator) { create(:user) }
-      let(:post) { create(:post, user: user) }
-      let(:comment) { create(:comment, user: commentator, post: post) }
+      let(:current_post) { create(:post, user: user) }
+      let(:comment) { create(:comment, user: commentator, post: current_post) }
 
       it 'grants access if user is an admin' do
         expect(subject).to permit(admin, comment)
@@ -92,7 +92,7 @@ RSpec.describe CommentPolicy, type: :policy do
       end
 
       it 'grants access if user\'s post' do
-        expect(subject).to permit(user, post)
+        expect(subject).to permit(user, current_post)
       end
 
       it 'denies if not user\'s comment' do

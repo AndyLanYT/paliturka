@@ -5,16 +5,16 @@ RSpec.describe LikePolicy, type: :policy do
 
   let(:user) { create(:user) }
   let(:another_user) { create(:user) }
-  let(:post) { create(:post, user: user) }
+  let(:current_post) { create(:post, user: user) }
 
   permissions :create? do
     context 'when user is authenticated' do
       it 'grants access if not user\'s post' do
-        expect(subject).to permit(another_user, post)
+        expect(subject).to permit(another_user, current_post)
       end
 
       it 'denies if user\'s post' do
-        expect(subject).not_to permit(user, post)
+        expect(subject).not_to permit(user, current_post)
       end
     end
 
@@ -26,9 +26,9 @@ RSpec.describe LikePolicy, type: :policy do
   end
 
   permissions :destroy? do
-    context 'when user is authenticated' do
-      let(:like) { create(:like, user: another_user, post: post) }
+    let(:like) { create(:like, user: another_user, post: current_post) }
 
+    context 'when user is authenticated' do
       it 'grants access if user\'s like' do
         expect(subject).to permit(another_user, like)
       end
@@ -41,7 +41,7 @@ RSpec.describe LikePolicy, type: :policy do
     context 'when user is not authenticated' do
       let(:visitor) { nil }
 
-      it { expect(subject).not_to permit(visitor) }
+      it { expect(subject).not_to permit(visitor, like) }
     end
   end
 end
