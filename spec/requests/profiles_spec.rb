@@ -21,7 +21,8 @@ RSpec.describe 'Profiles', type: :request do
     end
 
     it 'response is successful' do
-      put "/api/v1/users/#{user.id}/profile", params: { profile: valid_profile_params }, headers: auth_headers, as: :json
+      put "/api/v1/users/#{user.id}/profile", params: { profile: valid_profile_params }, headers: auth_headers,
+                                              as: :json
       expect(Profile.find_by(user_id: user.id).info).to eq valid_profile_params[:info]
       expect(Profile.find_by(user_id: user.id).first_name).to eq valid_profile_params[:first_name]
       expect(Profile.find_by(user_id: user.id).last_name).to eq valid_profile_params[:last_name]
