@@ -16,16 +16,18 @@ RSpec.describe 'Profiles', type: :request do
       {
         first_name: 'Carl',
         last_name: 'Son',
-        info: 'Helicopter'
+        info: 'Helicopter',
+        hidden: true
       }
     end
 
     it 'response is successful' do
       put "/api/v1/users/#{user.id}/profile", params: { profile: valid_profile_params }, headers: auth_headers,
                                               as: :json
-      expect(Profile.find_by(user_id: user.id).info).to eq valid_profile_params[:info]
       expect(Profile.find_by(user_id: user.id).first_name).to eq valid_profile_params[:first_name]
       expect(Profile.find_by(user_id: user.id).last_name).to eq valid_profile_params[:last_name]
+      expect(Profile.find_by(user_id: user.id).info).to eq valid_profile_params[:info]
+      expect(Profile.find_by(user_id: user.id).hidden).to eq valid_profile_params[:hidden]
     end
   end
 
@@ -37,7 +39,7 @@ RSpec.describe 'Profiles', type: :request do
         user2 = create(:user)
         record = user1.profile
         put "/api/v1/users/#{record.user.id}/profile",
-            params: '{ "profile": { "first_name": "Carl", "last_name": "Son", "info": "Helicopter" } }',
+            params: '{ "profile": { "first_name": "Carl", "last_name": "Son", "info": "Boy", "hidden": "true" } }',
             headers: get_headers(user2.email, user2.password)
         expect(response).to have_http_status(:unauthorized)
       end
@@ -47,13 +49,14 @@ RSpec.describe 'Profiles', type: :request do
       it 'lets me update a profile' do
         record = user.profile
         put "/api/v1/users/#{record.user.id}/profile",
-            params: '{ "profile": { "first_name": "Carl", "last_name": "Son", "info": "Helicopter" } }',
+            params: '{ "profile": { "first_name": "Carl", "last_name": "Son", "info": "Boy", "hidden": "true" } }',
             headers: auth_headers
         parsed = JSON.parse(response.body, object_class: OpenStruct)
         expect(response).to have_http_status(:ok)
         expect(parsed.first_name).to eq('Carl')
         expect(parsed.last_name).to eq('Son')
-        expect(parsed.info).to eq('Helicopter')
+        expect(parsed.info).to eq('Boy')
+        expect(parsed.hidden).to eq(true)
       end
     end
   end

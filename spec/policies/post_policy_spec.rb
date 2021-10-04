@@ -27,6 +27,9 @@ RSpec.describe PostPolicy, type: :policy do
   end
 
   permissions :show? do
+    let(:another_user) { create(:user) }
+    let(:hidden_post) { create(:post, user: user, hidden: true) }
+
     context 'when user is authenticated' do
       it 'grants access if user is an admin' do
         expect(subject).to permit(admin, current_post)
@@ -34,6 +37,18 @@ RSpec.describe PostPolicy, type: :policy do
 
       it 'grants access if user is present' do
         expect(subject).to permit(user, current_post)
+      end
+
+      it 'grants access if user is an admin and post is hidden' do
+        expect(subject).to permit(admin, hidden_post)
+      end
+
+      it 'grants access if user is the owner of hidden_post' do
+        expect(subject).to permit(user, hidden_post)
+      end
+
+      it 'denies access if post is hidden' do
+        expect(subject).not_to permit(another_user, hidden_post)
       end
     end
 
