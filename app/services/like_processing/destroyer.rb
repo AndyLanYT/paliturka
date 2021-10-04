@@ -1,17 +1,18 @@
 class LikeProcessing::Destroyer < ServiceBase
   include LikeProcessing
 
-  attr_reader :like, :user
+  attr_reader :like, :post, :user
 
-  def initialize(like, user)
+  def initialize(like, post, user)
     super()
 
     @like = like
+    @post = post
     @user = user
   end
 
-  def self.destroy!(like, user)
-    new(like, user).destroy!
+  def self.destroy!(like, post, user)
+    new(like, post, user).destroy!
   end
 
   def destroy!

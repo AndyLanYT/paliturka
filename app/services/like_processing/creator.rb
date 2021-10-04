@@ -15,9 +15,8 @@ class LikeProcessing::Creator < ServiceBase
   end
 
   def create!
-    render json: { status: 'Post not found' }, status: :not_found unless @post
-
-    render json: { error: 'Can\'t be liked twice!' } if already_liked?(@user.id, @post.id)
+    return unless @post
+    return if already_liked?(@user.id, @post.id)
 
     @post.likes.create(post: @post, user: @user)
   end

@@ -6,29 +6,26 @@ RSpec.describe 'Likes', type: :request do
   let(:auth_headers) { get_headers(user.email, user.password) }
 
   describe 'POST /api/v1/posts/:post_id/likes' do
-    context 'when we send correct params' do
-      before do
+    context 'when we send correct params' do      
+      let(:another_post) { create(:post) }
+
+      it 'can\'t be liked by owner of the post' do
         post "/api/v1/posts/#{current_post.id}/likes", headers: auth_headers
+        expect(response).to have_http_status(:unauthorized)
       end
 
-      it 'shows like' do
+      it 'can be liked by another user' do
+        post "/api/v1/posts/#{another_post.id}/likes", headers: auth_headers
         parsed = JSON.parse(response.body, object_class: OpenStruct)
         expect(response).to have_http_status(:ok)
         expect(parsed.status).to eq('Successfuly liked!')
       end
 
-      it 'denies creating 2 like from one person to one post' do
-        post "/api/v1/posts/#{current_post.id}/likes", headers: auth_headers
+      it 'denies creating 2 likes from one person to one post' do
+        post "/api/v1/posts/#{another_post.id}/likes", headers: auth_headers
+        post "/api/v1/posts/#{another_post.id}/likes", headers: auth_headers
         parsed = JSON.parse(response.body, object_class: OpenStruct)
         expect(response).to have_http_status(:ok)
-        expect(parsed.error).to eq('Can\'t be liked twice!')
-      end
-    end
-
-    context 'when we send incorrect post id' do
-      it 'can\'t find a post' do
-        post '/api/v1/posts/-1/likes', headers: auth_headers
-        expect(response).to have_http_status(:not_found)
       end
     end
   end
@@ -41,27 +38,6 @@ RSpec.describe 'Likes', type: :request do
         expect do
           delete "/api/v1/posts/#{current_post.id}/likes/#{like.id}", headers: auth_headers
         end.to change(Like, :count).by(-1)
-      end
-    end
-
-    context 'when data is incorrect' do
-      it 'can\'t find a post' do
-        delete '/api/v1/posts/-1/likes/-1', headers: auth_headers
-        expect(response).to have_http_status(:not_found)
-      end
-    end
-
-    context 'when post_id is incorrect and like_id is correct ' do
-      it 'can\'t find a post' do
-        delete "/api/v1/posts/-1/likes/#{like.id}", headers: auth_headers
-        expect(response).to have_http_status(:not_found)
-      end
-    end
-
-    context 'when post_id is correct and like_id is incorrect' do
-      it do
-        delete "/api/v1/posts/#{current_post.id}/likes/-1", headers: auth_headers
-        expect(response).to have_http_status(:not_found)
       end
     end
   end
