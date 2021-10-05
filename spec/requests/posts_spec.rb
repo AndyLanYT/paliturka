@@ -27,7 +27,8 @@ RSpec.describe 'Post CRUD', type: :request do
   describe 'POST #create' do
     let(:valid_post_params) do
       {
-        body: 'Post body'
+        body: 'Post body',
+        hidden: true
       }
     end
 
@@ -41,7 +42,8 @@ RSpec.describe 'Post CRUD', type: :request do
     let(:current_post) { create(:post, user: user) }
     let(:valid_post_params) do
       {
-        body: 'New post body'
+        body: 'New post body',
+        hidden: true
       }
     end
 
@@ -75,7 +77,7 @@ RSpec.describe 'Post CRUD', type: :request do
         user1 = create(:user)
         user2 = create(:user)
         record = create(:post, user: user1)
-        put "/api/v1/posts/#{record.id}", params: '{ "post": { "body": "New body" } }',
+        put "/api/v1/posts/#{record.id}", params: '{ "post": { "body": "New body", "hidden": "true" } }',
                                           headers: get_headers(user2.email, user2.password)
         expect(response).to have_http_status(:unauthorized)
       end
@@ -84,7 +86,8 @@ RSpec.describe 'Post CRUD', type: :request do
     context 'with an org owner' do
       it 'lets me update a post' do
         record = create(:post, user: user)
-        put "/api/v1/posts/#{record.id}", params: '{ "post": { "body": "New body" } }', headers: auth_headers
+        put "/api/v1/posts/#{record.id}", params: '{ "post": { "body": "New body", "hidden": "true" } }',
+                                          headers: auth_headers
         parsed = JSON.parse(response.body, object_class: OpenStruct)
         expect(response).to have_http_status(:ok)
         expect(parsed.body).to eq('New body')
