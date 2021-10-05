@@ -23,6 +23,9 @@ Rails.application.routes.draw do
       end
       resources :users do
         resource :profile
+        member do
+          get :following, :followers
+        end
       end
     end
   end
