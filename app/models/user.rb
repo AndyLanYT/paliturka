@@ -33,16 +33,16 @@ class User < ApplicationRecord
 
   has_many :allowlisted_jwts, dependent: :destroy
 
-  def follow(user)
-    active_relationships.create(followed_id: user.id)
+  def follow(another_user)
+    active_relationships.create(followed_id: another_user.id)
   end
 
-  def unfollow(user)
-    active_relationships.find_by(followed_id: user.id).destroy
+  def unfollow(another_user)
+    active_relationships.find_by(followed_id: another_user.id).destroy
   end
 
-  def following?(user)
-    following.include?(user)
+  def following?(another_user)
+    following.include?(another_user)
   end
 
   def for_display

@@ -13,7 +13,6 @@ Rails.application.routes.draw do
       get :auth
     end
   end
-
   
   namespace :api do
     namespace :v1 do
@@ -23,8 +22,10 @@ Rails.application.routes.draw do
       end
       resources :users do
         resource :profile
+        resource :relationships, only: %i[create destroy]
         member do
-          get :following, :followers
+          get :following
+          get :followers
         end
       end
     end
